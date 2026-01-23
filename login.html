@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Sistema de Gestión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="pocketbase-api.js"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div>
+                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                    Sistema de Gestión
+                </h2>
+                <p class="mt-2 text-center text-sm text-gray-600">
+                    Residencia Estudiantil
+                </p>
+            </div>
+            <form id="loginForm" class="mt-8 space-y-6">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="email" class="sr-only">Email</label>
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                            placeholder="Email"
+                        />
+                    </div>
+                    <div>
+                        <label for="password" class="sr-only">Contraseña</label>
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                            placeholder="Contraseña"
+                        />
+                    </div>
+                </div>
+
+                <div id="errorMessage" class="text-red-600 text-sm text-center hidden"></div>
+
+                <div>
+                    <button
+                        type="submit"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                        Iniciar Sesión
+                    </button>
+                </div>
+
+                <p class="text-center text-sm text-gray-600">
+                    Lleve un Mejor Control<br>
+                    @carlos_pegue<br>
+                    😊
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            try {
+                // Intentar login con PocketBase
+                const result = await api.login(email, password);
+                
+                if (result.success) {
+                    localStorage.setItem('userName', result.data.email);
+                    window.location.href = 'index.html';
+                } else {
+                    errorMessage.textContent = result.error || 'Email o contraseña inválidos';
+                    errorMessage.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error en login:', error);
+                errorMessage.textContent = 'Error de conexión. Verifica que PocketBase esté ejecutándose.';
+                errorMessage.classList.remove('hidden');
+            }
+        });
+
+        // Verificar si ya está autenticado
+        window.addEventListener('load', () => {
+            if (api.checkAuth()) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
