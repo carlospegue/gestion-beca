@@ -57,7 +57,7 @@
 
                 <p class="text-center text-sm text-gray-600">
                     Lleve un Mejor Control<br>
-                    @carlos_pegue<br>
+                    @carlospegue<br>
                     😊
                 </p>
             </form>
@@ -79,7 +79,7 @@
                     localStorage.setItem('userName', result.data.email);
                     window.location.href = 'index.html';
                 } else {
-                    errorMessage.textContent = result.error || 'Email o contraseña inválidos';
+                    errorMessage.textContent ='Email o contraseña inválidos';
                     errorMessage.classList.remove('hidden');
                 }
             } catch (error) {
