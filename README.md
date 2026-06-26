@@ -68,7 +68,7 @@ Gestion Beca/
    - `plantas`
    - `edificios`
    - `cuartelerias`
-   - `evaluacions` (nota la 's' al final)
+   - `evaluacions` 
    - `mediosbasicos`
    - `sancion_disciplinarias`
 
@@ -83,7 +83,7 @@ La aplicación conecta a PocketBase en: `http://localhost:8090`
 Para cambiar el servidor, edita `pocketbase-api.js`:
 
 ```javascript
-const PB_URL = 'http://localhost:8090'; // Cambiar aquí
+const PB_URL = 'http://localhost:8090'; 
 ```
 
 ## 🛠️ Características

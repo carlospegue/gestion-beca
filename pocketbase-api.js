@@ -1,8 +1,8 @@
 // Configuración de PocketBase
 // Detecta automáticamente si estamos en localhost o en producción
-const PB_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:8090' 
-    : window.location.origin;
+// ✅ Correcto — detecta ambos
+const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const PB_URL = isLocal ? 'http://127.0.0.1:8090' : window.location.origin;
 
 let pb = null;
 let authToken = null;
@@ -10,24 +10,8 @@ let currentUser = null;
 
 // Inicializar PocketBase
 async function initPocketBase() {
-    try {
-        // Cargar la librería de PocketBase
-        const script = document.createElement('script');
-        script.src = PB_URL + '/api/files/pocketbase.js';
-        script.onload = () => {
-            pb = new PocketBase(PB_URL);
-            console.log('PocketBase inicializado');
-            checkAuthStatus();
-        };
-        script.onerror = () => {
-            console.warn('No se pudo cargar la librería de PocketBase, usando metodo alternativo');
-            // Usar fetch API como alternativa
-            pb = null;
-        };
-        document.head.appendChild(script);
-    } catch (error) {
-        console.error('Error inicializando PocketBase:', error);
-    }
+    checkAuthStatus();
+    console.log('PocketBase inicializado en', PB_URL);
 }
 
 // Usar fetch API para las peticiones
